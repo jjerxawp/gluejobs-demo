@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "demo_glue_source" {
   force_destroy = var.force_destroy
 }
 
-resource "null_response" "upload_to_s3_demo_glue_source" {
+resource "null_resource" "upload_to_s3_demo_glue_source" {
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -12,6 +12,7 @@ resource "null_response" "upload_to_s3_demo_glue_source" {
     command = "aws s3 sync ../data/city_temperature.csv s3://${aws_s3_bucket.demo_glue_source.id}/ --delete --exclude '.DS_Store'"
   }
 }
+
 
 resource "aws_s3_bucket" "demo_glue_target" {
   bucket_prefix = var.demo_glue_target

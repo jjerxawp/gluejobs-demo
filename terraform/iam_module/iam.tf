@@ -97,3 +97,15 @@ resource "aws_iam_role" "s3_readOnly" {
 	  ]
   })
 }
+
+output "iam_glue_role_arn" {
+	value = aws_iam_role.glue_role.arn
+}
+
+output "iam_s3_full_access_role_arn" {
+	value = aws_iam_role.s3_fullAccess.arn
+}
+
+output "iam_s3_read_only_role_arn" {
+	value = aws_iam_role.s3_readOnly.arn
+}

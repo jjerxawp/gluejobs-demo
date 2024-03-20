@@ -7,6 +7,22 @@ resource "aws_glue_catalog_table" "glue_data_catalog_table" {
   database_name = aws_glue_catalog_database.glue_data_catalog_db.id
 }
 
+
+module "demo_iam" {
+  source = "./iam_module"
+}
+
+output "iam_glue_role_arn" {
+  value = module.demo_iam.iam_glue_role_arn
+}
+output "iam_s3_full_access_role_arn" {
+  value = module.demo_iam.iam_s3_full_access_role_arn
+}
+output "iam_s3_read_only_role_arn" {
+  value = module.demo_iam.iam_s3_read_only_role_arn
+}
+
+
 module "demo_s3" {
   source = "./s3_module"
   demo_glue_source = var.demo_glue_source
@@ -32,18 +48,18 @@ output "demo_glue_crawler_bucket_id" {
   value = module.demo_s3.demo_glue_crawler_id
 }
 
-
 resource "aws_glue_crawler" "glue_demo_crawler_1" {
   database_name = aws_glue_catalog_database.glue_data_catalog_db.name
   name = var.demo_crawler_1_name
+  role = module.demo_iam.iam_glue_role_arn
 
   s3_target {
-    path = "s3://${demo_glue_crawler_bucket_id}/${var.demo_path_1}"
+    path = "s3://${module.demo_s3.demo_glue_crawler_id}/${var.demo_path_1}"
   }
 }
 
 variable "glue_data_catalog_db" {
-  type = "string"
+  type = string
   default = "glue_data_catalog_db"
 }
 
@@ -57,5 +73,5 @@ variable "demo_crawler_1_name" {
 }
 
 variable "demo_path_1" {
-  value = "demo1"
+  default = "demo1"
 }
