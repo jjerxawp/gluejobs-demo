@@ -47,26 +47,44 @@ resource "null_resource" "upload_to_s3_crawler" {
     command = "aws s3 sync ../data/crawlerfiles s3://${aws_s3_bucket.demo_glue_crawler.id}/ --delete --exclude '.DS_Store'"
   }
 }
+
+output "demo_glue_source_id" {
+  value = aws_s3_bucket.demo_glue_source.id
+}
+
+output "demo_glue_target_id" {
+  value = aws_s3_bucket.demo_glue_target.id
+}
+
+output "demo_glue_etl_code_id" {
+  value = aws_s3_bucket.demo_glue_etl_code.id
+}
+
+output "demo_glue_crawler_id" {
+  value = aws_s3_bucket.demo_glue_crawler.id
+}
+
+
 variable "demo_glue_source" {
   type = string
-  default = "demo-glue-job-source"
+  # default = "demo-glue-job-source"
 }
 
 variable "demo_glue_target" {
   type = string
-  default = "demo-glue-job-target"
+  # default = "demo-glue-job-target"
 }
 
 variable "demo_glue_etl_code" {
   type = string
-  default = "demo-glue-etl-code"
+  # default = "demo-glue-etl-code"
 }
 
 variable "demo_glue_crawler" {
   type = string
-  default = "demo-glue-crawler"
+  # default = "demo-glue-crawler"
 }
 
 variable "force_destroy" {
-  default = true
+  # default = true
 }
