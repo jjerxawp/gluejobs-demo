@@ -50,13 +50,34 @@ output "demo_glue_crawler_bucket_id" {
 
 resource "aws_glue_crawler" "glue_demo_crawler_1" {
   database_name = aws_glue_catalog_database.glue_data_catalog_db.name
-  name = var.demo_crawler_1_name
+  name = lookup(var.demo_crawler_name, "crawler_1")
   role = module.demo_iam.iam_glue_role_arn
 
+  schema_change_policy {
+    delete_behavior = "DELETE_FROM_DATABASE"
+    update_behavior = "UPDATE_IN_DATABASE"
+  }
+
   s3_target {
-    path = "s3://${module.demo_s3.demo_glue_crawler_id}/${var.demo_path_1}"
+    path = "s3://${module.demo_s3.demo_glue_crawler_id}/${lookup(var.demo_path, "crawler_1")}"
   }
 }
+
+resource "aws_glue_crawler" "glue_demo_crawler_2" {
+  database_name = aws_glue_catalog_database.glue_data_catalog_db.name
+  name = lookup(var.demo_crawler_name, "crawler_2")
+  role = module.demo_iam.iam_glue_role_arn
+
+  schema_change_policy {
+    delete_behavior = "DELETE_FROM_DATABASE"
+    update_behavior = "UPDATE_IN_DATABASE"
+  }
+
+  s3_target {
+    path = "s3://${module.demo_s3.demo_glue_crawler_id}/${lookup(var.demo_path, "crawler_2")}"
+  }
+}
+
 
 variable "glue_data_catalog_db" {
   type = string
@@ -67,11 +88,20 @@ variable "demo_glue_data_table" {
   default = ["demo_citytemp"]
 }
 
-variable "demo_crawler_1_name" {
-  type = string
-  default = "demo-crawler-1"
+variable "demo_crawler_name" {
+  type = map
+  default = {
+    crawler_1 = "demo-crawler-1",
+    crawler_2 = "demo-crawler-2"
+  }
 }
 
-variable "demo_path_1" {
-  default = "demo1"
+variable "demo_path" {
+  type = map
+  default = {
+    crawler_1 = "demo1",
+    crawler_2 = "demo2",
+    crawler_3 = "demo3",
+    crawler_4 = "demo4"
+  }
 }
