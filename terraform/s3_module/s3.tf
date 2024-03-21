@@ -13,7 +13,6 @@ resource "null_resource" "upload_to_s3_demo_glue_source" {
   }
 }
 
-
 resource "aws_s3_bucket" "demo_glue_target" {
   bucket_prefix = var.demo_glue_target
   force_destroy = var.force_destroy
