@@ -24,5 +24,3 @@ extracted = datetime.datetime.today().strftime('%Y-%m-%d')
 df = spark.read.format("csv").option("header",True).load("s3a://{0}/*".format(source_bucket))
 df = df.filter( (df.Country == "Algeria") & (df.City == "Algiers") & (df.Year > 2016) )
 df.write.mode('overwrite').partitionBy("Year").parquet("s3a://{0}/extracted_date={1}/".format(target_bucket, extracted))
-
-

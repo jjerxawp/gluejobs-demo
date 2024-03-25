@@ -9,7 +9,7 @@ resource "null_resource" "upload_to_s3_demo_glue_source" {
   }
 
   provisioner "local-exec" {
-    command = "aws s3 sync ../data/city_temperature.csv s3://${aws_s3_bucket.demo_glue_source.id}/ --delete --exclude '.DS_Store'"
+      command = "aws s3 sync ../data/city_temperature.csv s3://${aws_s3_bucket.demo_glue_source.id}/city_temperature.csv --delete --exclude \"*.DS_Store\""
   }
 }
 
@@ -29,7 +29,7 @@ resource "null_resource" "upload_to_s3_etl_code" {
   }
 
   provisioner "local-exec" {
-    command = "aws s3 sync ../data/etl-code s3://${aws_s3_bucket.demo_glue_etl_code.id}/ --delete --exclude '.DS_Store'" 
+    command = "aws s3 sync ../data/etl-code s3://${aws_s3_bucket.demo_glue_etl_code.id}/ --delete --exclude \"*.DS_Store\"" 
   }
 }
 
@@ -44,7 +44,7 @@ resource "null_resource" "upload_to_s3_crawler" {
   }
 
   provisioner "local-exec" {
-    command = "aws s3 sync ../data/crawlerfiles s3://${aws_s3_bucket.demo_glue_crawler.id}/ --delete --exclude '.DS_Store'"
+    command = "aws s3 sync ../data/crawlerfiles s3://${aws_s3_bucket.demo_glue_crawler.id}/ --delete --exclude \"*.DS_Store\""
   }
 }
 

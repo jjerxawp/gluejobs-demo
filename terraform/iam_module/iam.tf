@@ -36,7 +36,8 @@ resource "aws_iam_policy" "s3_full_access_policy" {
         "Action": "s3:*",
         "Resource": ["*"]
       }
-  })
+		]
+	})
 }
 
 resource "aws_iam_policy_attachment" "s3_full_access_policy_attachment" {

@@ -111,6 +111,25 @@ resource "aws_glue_crawler" "glue_demo_crawler_4" {
   }
 }
 
+resource "aws_glue_crawler" "glue_demo_crawler_5" {
+  database_name = aws_glue_catalog_database.glue_data_catalog_db.name
+  name = lookup(var.demo_crawler_name, "crawler_5")
+  role = module.demo_iam.iam_glue_role_arn
+
+  schema_change_policy {
+    delete_behavior = "DELETE_FROM_DATABASE"
+    update_behavior = "UPDATE_IN_DATABASE"
+  }
+
+  s3_target {
+    path = "s3://${module.demo_s3.demo_glue_crawler_id}/${lookup(var.demo_path, "crawler_5")}"
+    exclusions = [
+      "historical/**",
+      "historical-year/**"
+    ]
+  }
+}
+
 variable "glue_data_catalog_db" {
   type = string
   default = "glue_data_catalog_db"
@@ -126,7 +145,8 @@ variable "demo_crawler_name" {
     crawler_1 = "demo-crawler-1",
     crawler_2 = "demo-crawler-2",
     crawler_3 = "demo-crawler-3",
-    crawler_4 = "demo-crawler-4"
+    crawler_4 = "demo-crawler-4",
+    crawler_5 = "demo-crawler-5"
   }
 }
 
@@ -136,7 +156,8 @@ variable "demo_path" {
     crawler_1 = "demo1",
     crawler_2 = "demo2",
     crawler_3 = "demo3",
-    crawler_4 = "demo4"
+    crawler_4 = "demo4",
+    crawler_5 = "demo4"
   }
 }
 
